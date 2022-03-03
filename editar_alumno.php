@@ -1,27 +1,27 @@
 <?php session_start();
 
-require 'admin/config.php';
 require 'funciones.php';
+require_once 'models/Alumno.php';
+require_once 'models/Especialidad.php';
+require_once 'models/Sedes.php';
 
+$model_alumno = new Alumno();
+$model_sedes = new Sedes();
+$model_especialidades = new Especialidad();
+$error_insert=false;
 
-$conexion = conexion($bd_config);
-
-	$sentencia1 = $conexion->prepare("SELECT *FROM especialidades ORDER BY especialidad");
-	$sentencia1->execute();
-	$posts1 = $sentencia1->fetchAll();
+	$posts1 = $model_especialidades->listar_especialidades();
 
 	
-	$sentencia2 = $conexion->prepare("SELECT DISTINCT sede FROM alumno ORDER BY sede");
-	$sentencia2->execute();
-	$posts2 = $sentencia2->fetchAll();
+	$posts2 = $model_sedes->listar_sedes_alumnos();
 
 
-	$statement = $conexion->prepare("SELECT * FROM alumno WHERE codigo=:codigo");
-	$statement->execute(array(':codigo'=>$_GET['cod']));
-	$posts = $statement->fetch();
+	$posts = $model_alumno->buscar_alumno($_GET['cod']);
 	/*$sentencia = $conexion->prepare("SELECT * FROM asistencia INNER JOIN alumno ON asistencia.codigo=alumno.codigo WHERE asistencia.codigo=:codigo AND asistencia.fecha=:fecha ");
 	$sentencia->execute(array(':codigo'=>$_GET['cod'],':fecha'=>$_GET['fecha']));
 	$posts = $sentencia->fetch();*/
+
+
 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -41,8 +41,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$descuento = $_POST['descuento'];
 
 
-	$statement1 = $conexion->prepare('UPDATE alumno SET  sede=:sede, turno=:turno, aula=:aula,ciclo=:ciclo, a_paterno=:a_paterno,a_materno=:a_materno,nombres=:nombres,dni=:dni,carrera=:carrera,sexo=:sexo,descuento=:descuento  WHERE codigo =:codigo');
-	$statement1->execute(array(':codigo'=>$codigo,':sede'=>$sede,':turno'=>$turno,':aula'=>$aula,':ciclo'=>$ciclo, ':a_paterno'=>utf8_decode($paterno), ':a_materno'=>utf8_decode($materno),':nombres'=>utf8_decode($nombres),':dni'=>$dni,':carrera'=>$carrera,':sexo'=>$sexo,':descuento'=>$descuento));
+	$insert_alumno = $model_alumno->actualizar_alumno($codigo,$dni,$carrera,$nombres,$paterno,$materno,$sexo,$turno,$aula,$ciclo,$sede,$descuento);
+
+	if ($insert_alumno > 0) {
+		header('Location: menu.php');
+	}else{
+		$error_insert = true;
+	}
+	
 
 	header("Location: alumnos1.php?cod=$codigo");
 	

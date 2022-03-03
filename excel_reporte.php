@@ -8,10 +8,10 @@ require_once '../../PHPEXCEL/Classes/PHPExcel.php';
 $cod = $_GET['cod'];
 
 
-        $conexion = new PDO('mysql:host=localhost;dbname=ceprevi','root','ceprevi2020');
-        $sentencia = $conexion->prepare("SELECT * FROM alumno INNER JOIN asistencia ON alumno.codigo=asistencia.codigo WHERE asistencia.codigo=:cod ORDER BY fecha");
-        $sentencia->execute(array(':cod'=>$cod));
-        $posts = $sentencia->fetchAll();
+$conexion = new PDO('mysql:host=localhost;dbname=ceprevi','root','ceprevi2020');
+$sentencia = $conexion->prepare("SELECT * FROM alumno INNER JOIN asistencia ON alumno.codigo=asistencia.codigo WHERE asistencia.codigo=:cod ORDER BY fecha");
+$sentencia->execute(array(':cod'=>$cod));
+$posts = $sentencia->fetchAll();
         
 
 

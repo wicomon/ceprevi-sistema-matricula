@@ -1,21 +1,12 @@
 <?php session_start();
 
-require 'admin/config.php';
 require 'funciones.php';
 
-
-$conexion = conexion($bd_config);
-
-
-
-	/*$sentencia = $conexion->prepare("SELECT * FROM asistencia INNER JOIN alumno ON asistencia.codigo=alumno.codigo WHERE asistencia.codigo=:codigo AND asistencia.fecha=:fecha ");
-	$sentencia->execute(array(':codigo'=>$_GET['cod'],':fecha'=>$_GET['fecha']));
-	$posts = $sentencia->fetch();*/
+require_once 'models/Economico.php';
 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-	// Limpiamos los datos para evitar que el usuario inyecte codigo.
 	$codigo = $_POST['codigo'];
 	$nombres = $_POST['nombres'];
 	$nro_recibo = $_POST['nro_recibo'];
@@ -32,8 +23,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 	echo $resultado;
 
-	$statement1 = $conexion->prepare('INSERT INTO economico (codigo, nombres,nro_recibo, liquidacion,fecha, monto,ciclo) VALUES (:codigo, :nombres, :nro_recibo, :liquidacion, :fecha, :monto, :ciclo)');
-	$statement1->execute(array(':codigo'=>$codigo,':nombres'=>$nombres,':nro_recibo'=>$nro_recibo,':liquidacion'=>$liquidacion,':fecha'=>$resultado, ':monto'=>$monto, ':ciclo'=>$ciclo));
+	$model_economico = new Economico();
+
+	$resultado = $model_economico->insertar_pago($codigo,$nombres,$nro_recibo,$liquidacion,$resultado,$monto,$ciclo);
 
 	header("Location: alumnos1.php?cod=$codigo");
 	

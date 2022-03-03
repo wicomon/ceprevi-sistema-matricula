@@ -1,9 +1,10 @@
 <?php
 require 'fpdf/fpdf.php';
-require 'admin/config.php';
+
 require 'funciones.php';
-//error_reporting(0);
-$conexion = conexion($bd_config);
+require_once 'models/Alumno.php';
+require_once 'models/Economico.php';
+
 class PDF extends FPDF
 {
 // Cabecera de página
@@ -38,15 +39,17 @@ function Footer()
 
 $codigo = $_GET['cod'];
 
-    $sentencia = $conexion->prepare("SELECT * FROM alumno INNER JOIN especialidades ON alumno.carrera = especialidades.cod_esp WHERE alumno.codigo=:codigo");
-    $sentencia->execute(array(':codigo'=>$codigo));
-    $posts = $sentencia->fetchAll();
-    $alumno = $posts[0];
+$model_alumno = new Alumno();
+$model_economico = new Economico();
 
-    $sentencia2 = $conexion->prepare("SELECT * FROM economico WHERE codigo=:paterno  ORDER BY fecha DESC");
-	$sentencia2->execute(array(':paterno'=>$codigo));
-    $economico = $sentencia2->fetchAll();
     
+    $alumno = $model_alumno->buscar_alumno_completo($codigo);
+
+    $economico = $model_economico->buscar_alumno($codigo);
+
+    // echo '<pre>';
+    // print_r($economico);
+    // echo '</pre>';
 
 $fecha=strftime( "%Y-%m-%d-%H-%M-%S", time() );
 // Creación del objeto de la clase heredada

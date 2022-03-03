@@ -68,6 +68,7 @@
 		var xmlhttp = new XMLHttpRequest();
 		xmlhttp.open("GET","ajax.php?country="+document.getElementById("sciclo").value,false);
 		xmlhttp.send(null);
+		// console.log(xmlhttp.responseText);
 		document.getElementById("saula").innerHTML=xmlhttp.responseText;
 	}
 </script>

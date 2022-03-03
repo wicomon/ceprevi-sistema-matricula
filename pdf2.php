@@ -1,5 +1,6 @@
 <?php
 require 'fpdf/fpdf.php';
+require_once 'models/Alumno.php';
 
 class PDF extends FPDF
 {
@@ -32,11 +33,10 @@ function Footer()
 
 $cod = $_GET['cod'];
 
-    $conexion = new PDO('mysql:host=localhost;dbname=ceprevi','root','ceprevi2020');
-    $sentencia = $conexion->prepare("SELECT * FROM alumno WHERE codigo=:paterno  ORDER BY a_materno,nombres");
-    $sentencia->execute(array(':paterno'=>$cod));
-    $posts = $sentencia->fetchAll();
-    $posts = $posts[0];
+$model_alumno = new Alumno();
+
+
+    $posts = $model_alumno->buscar_alumno($cod);
 
 $fecha=strftime( "%Y-%m-%d-%H-%M-%S", time() );
 // Creación del objeto de la clase heredada

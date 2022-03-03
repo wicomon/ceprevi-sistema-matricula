@@ -1,28 +1,27 @@
 <?php
 require 'fpdf/fpdf.php';
 
-require 'admin/config.php';
 require 'funciones.php';
+require_once 'models/Alumno.php';
+require_once 'models/Economico.php';
 
-$conexion = conexion($bd_config);
-class PDF extends FPDF
-{
-// Cabecera de página
-function Header()
-{
-    // Logo
-    // Arial bold 15
-    $this->SetFont('Arial','B',25);
-    // Movernos a la derecha
-    $this->Cell(80);
-    // Título
-    $this->SetFont('Arial','I',10);
-    $this->Ln(1);
-    // Salto de línea
-    $this->Ln(10);
-}
+class PDF extends FPDF  {
+    // Cabecera de página
+    function Header()
+    {
+        // Logo
+        // Arial bold 15
+        $this->SetFont('Arial','B',25);
+        // Movernos a la derecha
+        $this->Cell(80);
+        // Título
+        $this->SetFont('Arial','I',10);
+        $this->Ln(1);
+        // Salto de línea
+        $this->Ln(10);
+    }
 
-// Pie de página
+    // Pie de página
 
 }
 
@@ -30,13 +29,12 @@ $color = $_GET['color'];
 $cicl = $_GET['cicl'];
 $sede = $_GET['sede'];
 
-        $sentencia = $conexion->prepare("SELECT * FROM alumno WHERE sede=:sede AND ciclo=:ciclo ORDER BY aula,a_paterno,a_materno,nombres");
-        $sentencia->execute(array(':sede'=>$sede,':ciclo'=>$cicl));
-        $post = $sentencia->fetchAll();
+$model_alumno = new Alumno();
+$model_economico = new Economico();
 
-        $sentencia2 = $conexion->prepare("SELECT * FROM economico WHERE ciclo=:ciclo  ORDER BY fecha DESC");
-        $sentencia2->execute(array(':ciclo'=>$cicl));
-        $post2 = $sentencia2->fetchAll();
+        $post = $model_alumno->alumnos_por_sede_ciclo($sede, $cicl);
+
+        $post2 = $model_economico->listado_por_ciclo_fecha($cicl);
 
 $fecha=strftime( "%Y-%m-%d-%H-%M-%S", time() );
 // Creación del objeto de la clase heredada

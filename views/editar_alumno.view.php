@@ -102,7 +102,12 @@
 			</div>
 		</div>
 
-			<br><input type="submit" class="btn btn-danger" value="Modificar Datos">
+			<br><input type="submit" class="btn btn-danger" value="Modificar Datos"><br><br> 
+			<?php if($error_insert):?>
+				<div class="alert alert-danger" role="alert">
+					No se inserto ningun alumno
+				</div>
+			<?php endif;?>
 		</form>
 </div>
 

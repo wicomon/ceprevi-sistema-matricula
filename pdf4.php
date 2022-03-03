@@ -32,7 +32,7 @@ function Footer()
 
 
 
-    $conexion = new PDO('mysql:host=localhost;dbname=ceprevi','root','ceprevi2020');
+    $conexion = new PDO('mysql:host=localhost;dbname=ceprevi','root','');
     $sentencia = $conexion->prepare("SELECT * FROM alumno INNER JOIN economico ON alumno.codigo=economico.codigo WHERE economico.deuda='0' AND alumno.sede<>'LIMA' ORDER BY sede,aula,a_paterno,a_materno,nombres");
     $sentencia->execute();
     $posts = $sentencia->fetchAll();

@@ -1,18 +1,16 @@
 <?php session_start();
 
-require 'admin/config.php';
 require 'funciones.php';
+require_once 'models/Especialidad.php';
+require_once 'models/Sedes.php';
+require_once 'models/Alumno.php';
 
+$error_insert=false;
+$conexion = new Especialidad();
+	$especialidades = $conexion->listar_especialidades();
 
-$conexion = conexion($bd_config);
-
-	$sentencia1 = $conexion->prepare("SELECT * FROM especialidades ORDER BY especialidad");
-	$sentencia1->execute();
-	$posts1 = $sentencia1->fetchAll();
-
-	$sentencia2 = $conexion->prepare("SELECT DISTINCT sede FROM sedes ORDER BY id");
-	$sentencia2->execute();
-	$posts2 = $sentencia2->fetchAll();
+	$conexion2 = new Sedes();
+	$sedes = $conexion2->listar_sedes();
 
 	/*$sentencia = $conexion->prepare("SELECT * FROM asistencia INNER JOIN alumno ON asistencia.codigo=alumno.codigo WHERE asistencia.codigo=:codigo AND asistencia.fecha=:fecha ");
 	$sentencia->execute(array(':codigo'=>$_GET['cod'],':fecha'=>$_GET['fecha']));
@@ -34,9 +32,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$ciclo = $_POST['ciclo'];
 	$sede = $_POST['sede'];
 
-	$statement = $conexion->prepare('INSERT INTO alumno (codigo, sede,turno, aula,ciclo, a_paterno,a_materno,nombres,dni,carrera,sexo) VALUES (:codigo, :sede,:turno, :aula,:ciclo, :a_paterno,:a_materno,:nombres,:dni,:carrera,:sexo)');
-	$statement->execute(array(':codigo'=>$codigo,':sede'=>$sede,':turno'=>$turno,':aula'=>$aula,':ciclo'=>$ciclo, ':a_paterno'=>$paterno, ':a_materno'=>$materno,':nombres'=>$nombres,':dni'=>$dni,':carrera'=>$carrera,':sexo'=>$sexo));
-	header('Location: menu.php');
+	$model_alumno = new Alumno();
+	$insert_alumno = $model_alumno->insertar_alumno($codigo,$dni,$carrera,$nombres,$paterno,$materno,$sexo,$turno,$aula,$ciclo,$sede);
+
+	if ($insert_alumno > 0) {
+		header('Location: menu.php');
+	}else{
+		$error_insert = true;
+	}
+	
 	
 	
 }

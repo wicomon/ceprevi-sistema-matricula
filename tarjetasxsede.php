@@ -1,47 +1,46 @@
 <?php
 require 'fpdf/fpdf.php';
+require_once 'models/Alumno.php';
+require_once 'models/Economico.php';
 
-class PDF extends FPDF
-{
-// Cabecera de página
-function Header()
-{
-    // Logo
-    $this->Image('images/unfv_logo.jpg',10,8,50);
-     $this->Ln(20);
-    // Arial bold 15
-    $this->SetFont('Arial','B',25);
-    // Movernos a la derecha
-    $this->Cell(80);
-    // Título
-    $this->SetFont('Arial','I',10);
-    $this->Ln(1);
-    // Salto de línea
-    $this->Ln(10);
-}
+class PDF extends FPDF{
+    // Cabecera de página
+    function Header()
+    {
+        // Logo
+        $this->Image('images/unfv_logo.jpg',10,8,50);
+        $this->Ln(20);
+        // Arial bold 15
+        $this->SetFont('Arial','B',25);
+        // Movernos a la derecha
+        $this->Cell(80);
+        // Título
+        $this->SetFont('Arial','I',10);
+        $this->Ln(1);
+        // Salto de línea
+        $this->Ln(10);
+    }
 
-// Pie de página
-function Footer()
-{
-    // Posición: a 1,5 cm del final
-    $this->SetY(-15);
-    // Arial italic 8
-    $this->SetFont('Arial','I',8);
-}
+    // Pie de página
+    function Footer()
+    {
+        // Posición: a 1,5 cm del final
+        $this->SetY(-15);
+        // Arial italic 8
+        $this->SetFont('Arial','I',8);
+    }
 }
 
 $sede = $_GET['aul'];
 $cicl = $_GET['cicl'];
 $color =$_GET['color'];
 
-$conexion = new PDO('mysql:host=localhost;dbname=ceprevi','root','ceprevi2020');
-$sentencia = $conexion->prepare("SELECT * FROM alumno WHERE sede=:sede AND ciclo=:ciclo ORDER BY sede,aula,a_paterno,a_materno,nombres");
-$sentencia->execute(array(':sede'=>$sede,':ciclo'=>$cicl));
-$alumno = $sentencia->fetchAll();
+$model_alumno = new Alumno();
+$model_economico = new Economico();
 
-$sentencia2 = $conexion->prepare("SELECT * FROM economico WHERE ciclo=:ciclo ORDER BY codigo,nombres");
-$sentencia2->execute(array(':ciclo'=>$cicl));
-$economico = $sentencia2->fetchAll();
+$alumno = $model_alumno->alumnos_por_sede_ciclo($sede, $cicl);
+
+$economico = $model_economico->listado_por_ciclo($cicl);
         
 $c=1; $monto_pagado=0; $total_a_pagar=0;
 $i = 0;

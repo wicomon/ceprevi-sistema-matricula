@@ -1,9 +1,9 @@
 <?php
 require 'fpdf/fpdf.php';
-
 require 'funciones.php';
 require_once 'models/Alumno.php';
-require_once 'models/Economico.php';
+
+
 
 class PDF extends FPDF
 {
@@ -26,24 +26,12 @@ function Header()
 
 }
 
-$cicl = $_GET['cicl'];
-$sede = $_GET['sede'];
+$cicl = $_GET['ciclo'];
 
-$model_alumnos = new Alumno();
-$model_economico = new Economico();
+$model_alumno = new Alumno();
 
-$posts = $model_alumnos->alumnos_por_sede_codigo($sede,$cicl);
+$posts = $model_alumno->alumnos_ordenadosXciclo_alfabetico($cicl);
 
-$posts2 = $model_economico->listado_por_ciclo($cicl);
-
-foreach ($posts2 as $post2) {
-    $codig = $post2['codigo'];
-    if(!isset($total_pago[$codig])){
-        $total_pago[$codig]=0;
-    }
-    $total_pago[$codig] = $total_pago[$codig] + $post2['monto'];
-    
-}
 
 $fecha=strftime( "%Y-%m-%d-%H-%M-%S", time() );
 // Creación del objeto de la clase heredada
@@ -74,17 +62,16 @@ $pdf->Image('images/linea.jpg',17,30,180,1);
 $pdf->SetFont('Arial','B',18);
 $pdf->Ln(10);
 $pdf->Cell(0,10,utf8_decode('Relación de Alumnos matriculados'),0,1,'C');
-$pdf->Cell(0,10,utf8_decode('SEDE : '.$sede),0,1,'C');
+
 
 
 $pdf->SetFont('Arial','B',12);
 //$pdf->Multicell($ancho,8,utf8_decode('Se presenta la información del alumno(a). '),0,'J',false);
 $pdf->Cell(10,$alto,utf8_decode('N°'),1,0,'C');
 $pdf->Cell(25,$alto,utf8_decode('Codigo'),1,0,'C');
-$pdf->Cell(80,$alto,utf8_decode('Nombre'),1,0,'C');
+$pdf->Cell(120,$alto,utf8_decode('Nombre'),1,0,'C');
 $pdf->Cell(15,$alto,utf8_decode('AULA'),1,0,'C');
-$pdf->Cell(18,$alto,utf8_decode('TURNO'),1,0,'C');
-$pdf->Cell(25,$alto,utf8_decode('Pagado'),1,1,'C');
+$pdf->Cell(18,$alto,utf8_decode('TURNO'),1,1,'C');
 
 
 $pdf->SetFont('Arial','',10);
@@ -94,31 +81,12 @@ $count=1;
         $pdf->Cell(10,$alto,$count,1,0,'C');
        $pdf->Cell(25,$alto,$posts['codigo'],1,0,'C');
        $pdf->SetFont('Arial','',8);
-        $pdf->Cell(80,$alto,$posts['a_paterno'].' '.$posts['a_materno'].' '.$posts['nombres'],1,0,'L');
+        $pdf->Cell(120,$alto,$posts['a_paterno'].' '.$posts['a_materno'].' '.$posts['nombres'],1,0,'L');
         $pdf->SetFont('Arial','',10);
         $pdf->Cell(15,$alto,$posts['aula'],1,0,'C');
-        $pdf->Cell(18,$alto,$posts['turno'],1,0,'C');
+        $pdf->Cell(18,$alto,$posts['turno'],1,1,'C');
             
-        $cod = $posts['codigo'];
-				if($posts['descuento']==!0){
-					$descuento = 1800*$posts['descuento']/100;
-					$total_a_pagar= 1830 - $descuento;
-				}else{
-					$total_a_pagar = 1830;
-				}
-				if($total_pago[$cod]<$total_a_pagar){
-                    $pdf->SetFont('Arial','B',10);
-                    $pdf->Cell(25,$alto,'S/ '.$total_pago[$cod],1,1,'C');
-                    $pdf->SetFont('Arial','',10);
-				}else{
-                    $pdf->Cell(25,$alto,'S/ '.$total_pago[$cod],1,1,'C');
-				}
-       /* if ($posts['deuda']=='0') {
-            $pdf->Cell(25,$alto,"BLANCO",1,1,'C');
-        }
-        if ($posts['deuda']==!'0') {
-            $pdf->Cell(25,$alto,"AZUL",1,1,'C');
-        }*/
+       
         $count++;
     }
 

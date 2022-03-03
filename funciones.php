@@ -17,7 +17,7 @@ function limpiarDatos($datos){
 }
 
 function traerDatos(){
-	$conexion = new PDO('mysql:host=localhost;dbname=ceprevi','root','ceprevi2020');
+	$conexion = new PDO('mysql:host=localhost;dbname=ceprevi','root','');
 	$statement = $conexion->prepare("SELECT *FROM alumno WHERE codigo=:codigo");
 	$statement->execute(array(':codigo'=>$_SESSION['usuario']));
 	$resultado = $statement->fetch();
@@ -25,7 +25,7 @@ function traerDatos(){
 }
 
 function datosAdmin(){
-	$conexion = new PDO('mysql:host=localhost;dbname=ceprevi','root','ceprevi2020');
+	$conexion = new PDO('mysql:host=localhost;dbname=ceprevi','root','');
 	$statement = $conexion->prepare("SELECT *FROM admin WHERE username=:username");
 	$statement->execute(array(':username'=>$_SESSION['usuario']));
 	$admin = $statement->fetch();
@@ -39,7 +39,7 @@ function id_articulo($id){
 
 
 function traerPreguntas(){
-	$conexion = new PDO('mysql:host=localhost;dbname='.$bd_config['basedatos'],'root','ceprevi2020');
+	$conexion = new PDO('mysql:host=localhost;dbname=ceprevi,root,');
 	$statement = $conexion->prepare("SELECT *FROM preguntas ");
 	$statement->execute();
 	$resultado = $statement->fetchAll();
@@ -85,7 +85,7 @@ function obtener_post_curso($conexion,$cod_curso){
 }
 
 function prueba($aula,$cursito){
-	$conexion = new PDO('mysql:host=localhost;dbname=encuesta','root','ceprevi2020');
+	$conexion = new PDO('mysql:host=localhost;dbname=encuesta','root','');
 	$statement = $conexion->prepare('SELECT *FROM aula INNER JOIN docente ON aula.cod_prof=docente.codigo WHERE aula.codigo=:aula AND docente.curso=:curso');
 	$statement->execute(array(':aula'=>$aula,':curso'=>$cursito));
 	$resultado = $statement->fetchAll();

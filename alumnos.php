@@ -1,10 +1,6 @@
 <?php session_start();
 
-require 'admin/config.php';
 require 'funciones.php';
-
-
-$conexion = conexion($bd_config);
 
 $resultado = traerDatos();
 
@@ -13,22 +9,19 @@ if (!isset($_SESSION['usuario'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+	require_once 'models/Alumno.php';
+
+	$conexion = new Alumno();
 
 	if ($_POST['paterno']=='' AND $_POST['materno']!=='' ) {
-		$sentencia = $conexion->prepare("SELECT * FROM alumno WHERE a_materno=:materno  ORDER BY a_materno,nombres");
-		$sentencia->execute(array(':materno'=>utf8_decode($_POST['materno'])));
-		$posts = $sentencia->fetchAll();
+		$posts = $conexion->alumnos_por_amaterno($_POST['materno']);
 	}
 
 	if ($_POST['paterno']==!'' AND $_POST['materno']=='' ) {
-		$sentencia = $conexion->prepare("SELECT * FROM alumno WHERE a_paterno=:paterno  ORDER BY a_materno,nombres");
-		$sentencia->execute(array(':paterno'=>utf8_decode($_POST['paterno'])));
-		$posts = $sentencia->fetchAll();
+		$posts = $conexion->alumnos_por_apaterno($_POST['paterno']);
 	}
 	if ($_POST['paterno']!=='' AND $_POST['materno']!=='' ) {
-			$sentencia = $conexion->prepare("SELECT * FROM alumno WHERE a_paterno=:paterno AND a_materno=:materno  ORDER BY a_materno,nombres");
-		$sentencia->execute(array(':paterno'=>utf8_decode($_POST['paterno']),':materno'=>utf8_decode($_POST['materno'])));
-		$posts = $sentencia->fetchAll();
+		$posts = $conexion->alumnos_por_apellidos($_POST['paterno'], $_POST['materno']);
 	}
 
 	if ($_POST['paterno']=='' AND $_POST['materno']=='' ) {

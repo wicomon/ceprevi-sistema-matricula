@@ -2,10 +2,9 @@
 
 require '../Classes/PHPExcel/IOFactory.php';
 require 'funciones.php';
-require 'admin/config.php';
 require 'header.php';
 require 'views/subir-pagos.view.php';
-$conexion = conexion($bd_config);
+require 'models/Economico.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -22,6 +21,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $numRows = $objPHPExcel->setActiveSheetIndex(0)->getHighestRow();
 
     $count = 0;
+
+    $model_economico = new Economico();
+
     echo '<br><br><div class="container border">';
     for ($i=1; $i <= $numRows ; $i++) { 
         $codigo = limpiarDatos($objPHPExcel->getActiveSheet()->getCell('A'.$i)->getCalculatedValue());
@@ -31,13 +33,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $fecha =  limpiarDatos($objPHPExcel->getActiveSheet()->getCell('E'.$i)->getCalculatedValue());
         $monto =  $objPHPExcel->getActiveSheet()->getCell('F'.$i)->getCalculatedValue();
         $ciclo = $objPHPExcel->getActiveSheet()->getCell('G'.$i)->getCalculatedValue();
+  
         
-            $statement = $conexion->prepare('INSERT INTO economico (codigo, nombres,nro_recibo, liquidacion,fecha, monto, ciclo) VALUES (:codigo, :nombres,:nro_recibo, :liquidacion,:fecha, :monto,:ciclo)');
-            $statement->execute(array(':codigo'=>utf8_decode($codigo),':nombres'=>utf8_decode($nombres),':nro_recibo'=>utf8_decode($nro_recibo),':liquidacion'=>utf8_decode($liquidacion),':fecha'=>utf8_decode($fecha), ':monto'=>utf8_decode($monto), ':ciclo'=>utf8_decode($ciclo)));
-        
-        
+        $insertado = $model_economico->insertar_pago(utf8_decode($codigo),utf8_decode($nombres),utf8_decode($nro_recibo),utf8_decode($liquidacion),utf8_decode($fecha),utf8_decode($monto),utf8_decode($ciclo));
 
-        if ($statement->rowCount() > 0)
+        if ($insertado > 0)
         {
             $count++;   
         }else{

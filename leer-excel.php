@@ -2,12 +2,13 @@
 
 require '../Classes/PHPExcel/IOFactory.php';
 require 'funciones.php';
-require 'admin/config.php';
 require 'header.php';
 require 'views/leer-excel.view.php';
-$conexion = conexion($bd_config);
+require_once 'models/Alumno.php';
+
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $conexion = new Alumno();
 
     $carpeta_destino = 'excel/';
 	$archivo_subido = $carpeta_destino . $_FILES['file']['name'];
@@ -36,16 +37,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $carrera =  limpiarDatos($objPHPExcel->getActiveSheet()->getCell('J'.$i)->getCalculatedValue());
         $sexo =  limpiarDatos($objPHPExcel->getActiveSheet()->getCell('K'.$i)->getCalculatedValue());
 
-        $statement = $conexion->prepare('INSERT INTO alumno (codigo, sede,turno, aula,ciclo, a_paterno,a_materno,nombres,dni,carrera,sexo) VALUES (:codigo, :sede,:turno, :aula,:ciclo, :a_paterno,:a_materno,:nombres,:dni,:carrera,:sexo)');
-        $statement->execute(array(':codigo'=>utf8_decode($codigo),':sede'=>utf8_decode($sede),':turno'=>utf8_decode($turno),':aula'=>utf8_decode($aula),':ciclo'=>utf8_decode($ciclo), ':a_paterno'=>utf8_decode($paterno), ':a_materno'=>utf8_decode($materno),':nombres'=>utf8_decode($nombres),':dni'=>utf8_decode($dni),':carrera'=>utf8_decode($carrera),':sexo'=>utf8_decode($sexo)));
-        
-        
-        if ($statement->rowCount() > 0)
+        $insertado = $conexion->insertar_alumno($codigo,$dni,$carrera,$nombres,$paterno,$materno,$sexo,$turno,$aula,$ciclo,$sede);
+
+        if ($insertado > 0)
         {
             $count++; 
         }else{
             
-            echo "<center>No se inserto el código : " . $codigo."</center>";
+            echo "<center>No se inserto el código : $codigo - $nombres - $paterno $materno </center>";
         } 
          
     }

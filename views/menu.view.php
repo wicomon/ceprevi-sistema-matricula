@@ -22,6 +22,7 @@
           echo '<div class="thumb"><a href="subir-pagos.php"> ECONÓMICO<img src="imagenes/1.jpg" alt=""></a></div>';
           echo '<div class="thumb"><a href="menu_asistencia.php">ASISTENCIA<img src="imagenes/6.jpg" alt=""></a></div>';
           echo '<div class="thumb"><a href="reporte.php"> REPORTE POR SEDE<img src="imagenes/5.jpg" alt=""></a></div>';
+          echo '<div class="thumb"><a href="reportes.php"> REPORTES <img src="imagenes/4.jpg" alt=""></a></div>';
        ?>
     </div>
   </section>

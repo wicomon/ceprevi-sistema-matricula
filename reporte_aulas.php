@@ -1,10 +1,11 @@
 <?php
 error_reporting(0);
 require 'fpdf/fpdf.php';
-
-require 'admin/config.php';
 require 'funciones.php';
-$conexion = conexion($bd_config);
+require_once 'models/Alumno.php';
+require_once 'models/Sedes.php';
+require_once 'models/Aulas.php';
+
 
 class PDF extends FPDF
 {
@@ -27,24 +28,20 @@ function Header()
 
 }
 
+$model_alumno = new Alumno();
+$model_sedes = new Sedes();
+$model_aulas = new Aulas();
+
 $ciclo = '2019-C';
 
 
-    $sentencia = $conexion->prepare("SELECT * FROM alumno WHERE ciclo=:ciclo ORDER BY aula");
-    $sentencia->execute(array(':ciclo'=>$ciclo));
-    $alumnos = $sentencia->fetchAll();
-    
-    $sentencia = $conexion->prepare("SELECT * FROM sedes");
-    $sentencia->execute();
-    $sedes = $sentencia->fetchAll();
+    $alumnos = $model_alumno->alumnos_ordenadosXaula($ciclo);
+   
+    $sedes = $model_sedes->listar_sedes();
 
-    $sentencia1 = $conexion->prepare("SELECT DISTINCT aula FROM alumno WHERE ciclo=:ciclo");
-	$sentencia1->execute(array(':ciclo'=>$ciclo));
-    $aulas = $sentencia1->fetchAll();
+    $aulas = $model_aulas->listar_aulasxciclo($ciclo);
     
-    $sentencia = $conexion->prepare("SELECT * FROM aulas WHERE ciclo=:ciclo");
-    $sentencia->execute(array(':ciclo'=>$ciclo));
-    $aulas_general = $sentencia->fetchAll();
+    $aulas_general = $model_aulas->listar_aulas_general($ciclo);
     
 $fecha=strftime( "%Y-%m-%d-%H-%M-%S", time() );
 // Creación del objeto de la clase heredada
