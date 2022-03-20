@@ -6,6 +6,7 @@ require 'header.php';
 require 'views/leer-excel.view.php';
 require_once 'models/Alumno.php';
 
+verificarPrivilegios($_SESSION['privilegios']);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $conexion = new Alumno();

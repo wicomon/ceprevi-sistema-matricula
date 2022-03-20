@@ -69,11 +69,16 @@
 				}else{
 					$total_a_pagar = 1830;
 				}
-				if($total_pago[$cod]<$total_a_pagar){
-					echo '<td style="color: #000; background:#F9BABA ;">'.$total_pago[$cod].'</td>'; //R O J O
+				if (isset($total_pago)) {
+					if($total_pago[$cod] < $total_a_pagar){
+						echo '<td style="color: #000; background:#F9BABA ;">'.$total_pago[$cod].'</td>'; //R O J O
+					}else{
+						echo '<td style="color: #000; background:#C5F0F3 ;">'.$total_pago[$cod].'</td>';
+					}
 				}else{
-					echo '<td style="color: #000; background:#C5F0F3 ;">'.$total_pago[$cod].'</td>';
+					echo '<td style="color: #000; background:#F9BABA ;">0</td>';
 				}
+				
 				
 
 			/*if ($total_pago[$cod]== ) {

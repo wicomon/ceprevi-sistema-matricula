@@ -23,6 +23,16 @@ class Sedes extends DBCONEXION {
 
     return $resultado;
   }
+
+  function listar_sedes_ciclo($ciclo){
+    $conexion = $this->set_connection();
+    $statement = $conexion->prepare(" SELECT DISTINCT sede FROM alumno WHERE ciclo='$ciclo' ");
+    $statement->execute();
+    $resultado = $statement->fetchAll();
+    $this->close();
+
+    return $resultado;
+  }
   
 }
 

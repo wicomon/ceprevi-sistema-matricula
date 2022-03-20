@@ -5,6 +5,8 @@ require_once 'models/Especialidad.php';
 require_once 'models/Sedes.php';
 require_once 'models/Alumno.php';
 
+verificarPrivilegios($_SESSION['privilegios']);
+
 $error_insert=false;
 $conexion = new Especialidad();
 	$especialidades = $conexion->listar_especialidades();

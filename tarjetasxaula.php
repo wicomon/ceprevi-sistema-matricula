@@ -1,5 +1,10 @@
 <?php
 require 'fpdf/fpdf.php';
+require_once 'models/Alumno.php';
+require_once 'models/Economico.php';
+
+$model_alumno = new Alumno();
+$model_economico = new Economico();
 
 class PDF extends FPDF
 {
@@ -34,14 +39,14 @@ $aul = $_GET['aul'];
 $cicl = $_GET['cicl'];
 $color =$_GET['color'];
 
-$conexion = new PDO('mysql:host=localhost;dbname=ceprevi','root','ceprevi2020');
-$sentencia = $conexion->prepare("SELECT * FROM alumno WHERE aula=:aula AND ciclo=:ciclo ORDER BY codigo,sede,aula,a_paterno,a_materno,nombres");
-$sentencia->execute(array(':aula'=>$aul,':ciclo'=>$cicl));
-$alumno = $sentencia->fetchAll();
+// $conexion = new PDO('mysql:host=localhost;dbname=ceprevi','root','ceprevi2020');
+// $sentencia = $conexion->prepare("SELECT * FROM alumno WHERE aula=:aula AND ciclo=:ciclo ORDER BY codigo,sede,aula,a_paterno,a_materno,nombres");
+// $sentencia->execute(array(':aula'=>$aul,':ciclo'=>$cicl));
+$alumno = $model_alumno->alumnos_por_aula($aul,$cicl,'ORDER BY codigo,sede,aula,a_paterno,a_materno,nombres');
 
-$sentencia2 = $conexion->prepare("SELECT * FROM economico WHERE ciclo=:ciclo ORDER BY codigo,nombres");
-$sentencia2->execute(array(':ciclo'=>$cicl));
-$economico = $sentencia2->fetchAll();
+// $sentencia2 = $conexion->prepare("SELECT * FROM economico WHERE ciclo=:ciclo ORDER BY codigo,nombres");
+// $sentencia2->execute(array(':ciclo'=>$cicl));
+$economico = $model_economico->listado_por_ciclo($cicl);
         
 $c=1; $monto_pagado=0; $total_a_pagar=0;
 $i = 0;

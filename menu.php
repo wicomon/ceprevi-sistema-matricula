@@ -1,17 +1,14 @@
 <?php session_start();
 
-require 'admin/config.php';
 require 'funciones.php';
 
 
 
-$resultado = traerDatos();
+// $resultado = traerDatos();
 
 if (!isset($_SESSION['usuario'])) {
-	header('Location: '.RUTA);
+	header('Location: index.php');
 }
-
-
 
 require 'header.php';
 require 'views/menu.view.php';

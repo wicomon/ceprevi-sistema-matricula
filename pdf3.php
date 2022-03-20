@@ -30,8 +30,8 @@ function Footer()
 }
 }
 
-$aul = '1';
-$cicl = '2019-C';
+$aul = $_GET['aul'];
+$cicl = $_GET['cicl'];
 
     $conexion = new PDO('mysql:host=localhost;dbname=ceprevi','root','');
     $sentencia = $conexion->prepare("SELECT * FROM alumno WHERE aula=:aula AND ciclo =:ciclo  ORDER BY a_paterno,a_materno,nombres");

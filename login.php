@@ -19,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 	if ($resultado !== false) {
 		$_SESSION['usuario'] = $usuario;
+		$_SESSION['privilegios'] = $resultado['privilegios'];
 		header('Location: index.php');
 	}else{
 		$errores .= '<li>Datos Incorrectos </li>';

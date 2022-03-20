@@ -2,19 +2,18 @@
 
 require 'admin/config.php';
 require 'funciones.php';
+require_once 'models/Alumno.php';
+require_once 'models/Economico.php';
+
+$model_economico = new Economico();
+$model_alumno = new Alumno();
 
 
-$conexion = conexion($bd_config);
 
 
-
-	$statement = $conexion->prepare("SELECT * FROM economico WHERE liquidacion=:liquidacion");
-	$statement->execute(array(':liquidacion'=>$_GET['cod']));
-	$posts = $statement->fetch();
-
-	/*$sentencia = $conexion->prepare("SELECT * FROM asistencia INNER JOIN alumno ON asistencia.codigo=alumno.codigo WHERE asistencia.codigo=:codigo AND asistencia.fecha=:fecha ");
-	$sentencia->execute(array(':codigo'=>$_GET['cod'],':fecha'=>$_GET['fecha']));
-	$posts = $sentencia->fetch();*/
+	// $statement = $conexion->prepare("SELECT * FROM economico WHERE liquidacion=:liquidacion");
+	// $statement->execute(array(':liquidacion'=>$_GET['cod']));
+	$posts = $model_economico->buscar_por_liquidacion($_GET['cod']);
 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -27,10 +26,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$fecha = $_POST['fecha'];
 	$monto = $_POST['monto'];
 	$ciclo = $_POST['ciclo'];
+	
 
-
-	$statement1 = $conexion->prepare('UPDATE economico SET  codigo=:codigo, nombres=:nombres, nro_recibo=:nro_recibo,liquidacion=:liquidacion, fecha=:fecha,monto=:monto,ciclo=:ciclo WHERE liquidacion =:liquidacion');
-	$statement1->execute(array(':codigo'=>$codigo,':nombres'=>$nombres,':nro_recibo'=>$nro_recibo,':liquidacion'=>$liquidacion,':fecha'=>$fecha, ':monto'=>$monto, ':ciclo'=>$ciclo));
+	$model_economico->editar_pago($codigo,$nombres,$nro_recibo,$liquidacion,$fecha,$monto,$ciclo);
 
 	header("Location: alumnos1.php?cod=$codigo");
 	

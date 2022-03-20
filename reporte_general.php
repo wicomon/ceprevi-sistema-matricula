@@ -106,13 +106,18 @@ $count=1;
 				}else{
 					$total_a_pagar = 1830;
 				}
-				if($total_pago[$cod]<$total_a_pagar){
-                    $pdf->SetFont('Arial','B',10);
-                    $pdf->Cell(25,$alto,'S/ '.$total_pago[$cod],1,1,'C');
-                    $pdf->SetFont('Arial','',10);
-				}else{
-                    $pdf->Cell(25,$alto,'S/ '.$total_pago[$cod],1,1,'C');
-				}
+                if (isset($total_pago)) {
+                    if($total_pago[$cod]<$total_a_pagar){
+                        $pdf->SetFont('Arial','B',10);
+                        $pdf->Cell(25,$alto,'S/ '.$total_pago[$cod],1,1,'C');
+                        $pdf->SetFont('Arial','',10);
+                    }else{
+                        $pdf->Cell(25,$alto,'S/ '.$total_pago[$cod],1,1,'C');
+                    }
+                }else{
+                    $pdf->Cell(25,$alto,'S/ 0',1,1,'C');
+                }
+				
        /* if ($posts['deuda']=='0') {
             $pdf->Cell(25,$alto,"BLANCO",1,1,'C');
         }

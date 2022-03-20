@@ -1,14 +1,14 @@
 <?php
 require 'fpdf/fpdf.php';
-require 'admin/config.php';
 require 'funciones.php';
 
-$conexion = conexion($bd_config);
+require_once 'models/Alumno.php';
+$model_alumno = new Alumno();
+
 class PDF extends FPDF
 {
 // Cabecera de página
-function Header()
-{
+function Header() {
     // Logo
     $this->Image('images/unfv_logo.jpg',10,8,50);
      $this->Ln(20);
@@ -41,17 +41,16 @@ $a2 = $_GET['a2'];
 $a3 = $_GET['a3'];
 
 
-    $sentencia = $conexion->prepare("SELECT * FROM alumno INNER JOIN especialidades ON alumno.carrera=especialidades.cod_esp WHERE a_paterno=:paterno AND a_materno=:materno AND dni=:dni  ORDER BY a_materno,nombres");
-    $sentencia->execute(array(':paterno'=>utf8_decode($a1),':materno'=>utf8_decode($a2),':dni'=>utf8_decode($a3)));
-    $posts = $sentencia->fetchAll();
-    $posts = $posts[0];
-
+    // $sentencia = $conexion->prepare("SELECT * FROM alumno INNER JOIN especialidades ON alumno.carrera=especialidades.cod_esp WHERE a_paterno=:paterno AND a_materno=:materno AND dni=:dni  ORDER BY a_materno,nombres");
+    // $sentencia->execute(array(':paterno'=>utf8_decode($a1),':materno'=>utf8_decode($a2),':dni'=>utf8_decode($a3)));
+    $posts = $model_alumno->buscar_alumno_por_nombres(utf8_decode($a1), utf8_decode($a2), utf8_decode($a3));
+    $posts1 = $posts[0];
     
 
 $fecha=strftime( "%Y-%m-%d-%H-%M-%S", time() );
 // Creación del objeto de la clase heredada
 
-if ($posts['turno'] == 'M') {
+if ($posts1['turno'] == 'M') {
     $turno = 'Mañana';
 }else{
     $turno = 'Tarde';
@@ -93,7 +92,7 @@ $pdf->Multicell($ancho,8,utf8_decode('Se presenta la información del alumno(a).
 $pdf->Ln(7);
 
 $pdf->SetFont('Arial','B',17);
-$pdf->Cell(0,10,$posts['a_paterno'].' '.$posts['a_materno'].' '.$posts['nombres'],0,1,'C');
+$pdf->Cell(0,10,$posts1['a_paterno'].' '.$posts1['a_materno'].' '.$posts1['nombres'],0,1,'C');
 $pdf->SetFont('Arial','B',10);
 $pdf->Ln(5);
 
@@ -106,10 +105,10 @@ $pdf->Cell(30,8,utf8_decode('SEDE'),1,0,'C');
 $pdf->Cell(80,8,utf8_decode('CARRERA PROFESIONAL'),1,1,'C');
 
 
-    $sentencia = $conexion->prepare("SELECT * FROM alumno INNER JOIN especialidades ON alumno.carrera=especialidades.cod_esp WHERE a_paterno=:paterno AND a_materno=:materno AND dni=:dni  ORDER BY a_materno,nombres");
-    $sentencia->execute(array(':paterno'=>utf8_decode($a1),':materno'=>utf8_decode($a2),':dni'=>utf8_decode($a3)));
-    $posts = $sentencia->fetchAll();
-    
+    // $sentencia = $conexion->prepare("SELECT * FROM alumno INNER JOIN especialidades ON alumno.carrera=especialidades.cod_esp WHERE a_paterno=:paterno AND a_materno=:materno AND dni=:dni  ORDER BY a_materno,nombres");
+    // $sentencia->execute(array(':paterno'=>utf8_decode($a1),':materno'=>utf8_decode($a2),':dni'=>utf8_decode($a3)));
+    // $posts = $sentencia->fetchAll();
+    // $posts = $model_alumno->buscar_alumno_por_nombres(utf8_decode($a1), utf8_decode($a2), utf8_decode($a3));
 
 $pdf->SetFont('Arial','',10);
     

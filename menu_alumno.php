@@ -3,7 +3,7 @@
 require 'funciones.php';
 
 
-$resultado = traerDatos();
+// $resultado = traerDatos();
 
 if (!isset($_SESSION['usuario'])) {
   header('Location: index.php');

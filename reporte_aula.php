@@ -1,10 +1,13 @@
 <?php
 require 'fpdf/fpdf.php';
 
-require 'admin/config.php';
 require 'funciones.php';
 
-$conexion = conexion($bd_config);
+require_once 'models/Alumno.php';
+require_once 'models/Economico.php';
+$model_alumno = new Alumno();
+$model_economico = new Economico();
+
 class PDF extends FPDF
 {
 // Cabecera de página
@@ -29,13 +32,10 @@ function Header()
 $aul = $_GET['aul'];
 $cicl = $_GET['cicl'];
 
-        $sentencia = $conexion->prepare("SELECT * FROM alumno WHERE aula=:aula AND ciclo=:ciclo ORDER BY aula,a_paterno,a_materno,nombres");
-        $sentencia->execute(array(':aula'=>$aul,':ciclo'=>$cicl));
-        $post = $sentencia->fetchAll();
+        $post = $model_alumno->alumnos_por_aula($aul,$cicl,'ORDER BY aula,a_paterno,a_materno,nombres');
 
-        $sentencia2 = $conexion->prepare("SELECT * FROM economico WHERE ciclo=:ciclo  ORDER BY fecha DESC");
-        $sentencia2->execute(array(':ciclo'=>$cicl));
-        $post2 = $sentencia2->fetchAll();
+    
+        $post2 = $model_economico->listado_por_ciclo_fecha($cicl);
 
 $fecha=strftime( "%Y-%m-%d-%H-%M-%S", time() );
 // Creación del objeto de la clase heredada

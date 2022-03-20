@@ -78,7 +78,8 @@
 			</thead>
 			<tbody>
 				<?php $c = 1;
-				$monto_tot = 0; ?>
+				$monto_tot = 0;
+				$total_a_pagar=1800; ?>
 				<?php foreach ($alumno as $post) : ?>
 					<?php foreach ($economico as $post1) : ?>
 						<?php if ($post1['codigo'] == $post['codigo']) : ?>

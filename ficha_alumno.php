@@ -5,36 +5,33 @@ require 'funciones.php';
 require_once 'models/Alumno.php';
 require_once 'models/Economico.php';
 
-class PDF extends FPDF
-{
-// Cabecera de página
-function Header()
-{
-    // Logo
-    $this->Image('images/unfv_logo.jpg',10,8,50);
-     $this->Ln(20);
-    // Arial bold 15
-    $this->SetFont('Arial','B',25);
-    // Movernos a la derecha
-    $this->Cell(80);
-    // Título
-    $this->SetFont('Arial','I',10);
-    $this->Ln(1);
-    $this->Cell(0,10,utf8_decode('"Año de la Universalización de la Salud"'),0,0,'C');
-    // Salto de línea
-    $this->Ln(10);
-}
+class PDF extends FPDF{
+    // Cabecera de página
+    function Header(){
+        // Logo
+        $this->Image('images/unfv_logo.jpg',10,8,50);
+            $this->Ln(20);
+        // Arial bold 15
+        $this->SetFont('Arial','B',25);
+        // Movernos a la derecha
+        $this->Cell(80);
+        // Título
+        $this->SetFont('Arial','I',10);
+        $this->Ln(1);
+        $this->Cell(0,10,utf8_decode('"Año de la Universalización de la Salud"'),0,0,'C');
+        // Salto de línea
+        $this->Ln(10);
+    }
 
-// Pie de página
-function Footer()
-{
-    // Posición: a 1,5 cm del final
-    $this->SetY(-15);
-    // Arial italic 8
-    $this->SetFont('Arial','I',8);
-    // Número de página
-    $this->Cell(0,10,utf8_decode('Prolongación Camaná 1014, Lima. Telf. 7480888 Anexos: 9533, 9507, 9511, 9534, 9543                                        www.unfv.edu.pe/ceprevi'),0,0,'C');
-}
+    // Pie de página
+    function Footer(){
+        // Posición: a 1,5 cm del final
+        $this->SetY(-15);
+        // Arial italic 8
+        $this->SetFont('Arial','I',8);
+        // Número de página
+        $this->Cell(0,10,utf8_decode('Prolongación Camaná 1014, Lima. Telf. 7480888 Anexos: 9533, 9507, 9511, 9534, 9543                                        www.unfv.edu.pe/ceprevi'),0,0,'C');
+    }
 }
 
 $codigo = $_GET['cod'];
@@ -43,9 +40,9 @@ $model_alumno = new Alumno();
 $model_economico = new Economico();
 
     
-    $alumno = $model_alumno->buscar_alumno_completo($codigo);
+$alumno = $model_alumno->buscar_alumno_completo($codigo);
 
-    $economico = $model_economico->buscar_alumno($codigo);
+$economico = $model_economico->buscar_alumno($codigo);
 
     // echo '<pre>';
     // print_r($economico);

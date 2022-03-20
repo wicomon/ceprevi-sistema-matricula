@@ -16,12 +16,16 @@
 
   <br><section class="fotos">
     <div class="contenedor">
-      <?php  
-          echo '<div class="thumb"><a href="tarjetas.php">BUSCAR AULA <img src="imagenes/3.jpg" alt=""></a></div>';
-          echo '<div class="thumb"><a href="extras/aulas/" target=_blank>EDITAR AULAS<img src="imagenes/8.jpg" alt=""></a></div>';
-          echo '<div class="thumb"><a href="reporte_aulas.php" target=_blank>Reporte de Matriculados <img src="imagenes/7.jpg" alt=""></a></div>';
-          echo '<div class="thumb"><a href="imprimir.php">Imprimir <img src="imagenes/4.jpg" alt=""></a></div>';
-       ?>
+   
+          <div class="thumb"><a href="tarjetas.php">BUSCAR AULA <img src="imagenes/3.jpg" alt=""></a></div>
+          
+          <div class="thumb"><a href="reporte_aulas.php" target=_blank>Reporte de Matriculados <img src="imagenes/7.jpg" alt=""></a></div>
+          <div class="thumb"><a href="imprimir.php">Imprimir <img src="imagenes/4.jpg" alt=""></a></div>
+
+          <?php if($_SESSION['privilegios'] <= 2): ?>
+            <div class="thumb"><a href="extras/aulas/" target=_blank>EDITAR AULAS<img src="imagenes/8.jpg" alt=""></a></div>
+          <?php endif; ?>
+ 
     </div>
   </section>
 

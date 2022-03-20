@@ -1,11 +1,12 @@
 <?php session_start();
 
+	require_once 'models/Aulas.php';
+
+	$model_aula = new Aulas();
+
 	$ciclo=$_GET['ciclo'];
 
-	$conexion = new PDO('mysql:host=localhost;dbname=ceprevi','root','ceprevi2020');
-	$sentencia3 = $conexion->prepare("SELECT DISTINCT aula FROM alumno WHERE ciclo=:ciclo");
-	$sentencia3->execute(array(':ciclo'=>$ciclo));
-	$posts3 = $sentencia3->fetchAll();
+	$posts3 = $model_aula->listar_aulasxciclo($ciclo);
 
 	echo "<select>";
 	foreach ($posts3 as $posts3) {

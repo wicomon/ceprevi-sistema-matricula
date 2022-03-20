@@ -1,5 +1,5 @@
 <?php session_start();
-error_reporting(0);
+// error_reporting(0);
 
 header('Content-type: application/json; charset=utf-8');
 $conexion = new mysqli('localhost','root','','ceprevi');

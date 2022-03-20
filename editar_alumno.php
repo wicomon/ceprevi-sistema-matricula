@@ -5,6 +5,8 @@ require_once 'models/Alumno.php';
 require_once 'models/Especialidad.php';
 require_once 'models/Sedes.php';
 
+verificarPrivilegios($_SESSION['privilegios']);
+
 $model_alumno = new Alumno();
 $model_sedes = new Sedes();
 $model_especialidades = new Especialidad();

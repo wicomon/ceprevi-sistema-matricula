@@ -4,8 +4,7 @@ require 'fpdf/fpdf.php';
 class PDF extends FPDF
 {
 // Cabecera de página
-function Header()
-{
+function Header(){
     // Logo
     $this->Image('images/unfv_logo.jpg',10,8,50);
      $this->Ln(20);
@@ -21,8 +20,7 @@ function Header()
 }
 
 // Pie de página
-function Footer()
-{
+function Footer(){
     // Posición: a 1,5 cm del final
     $this->SetY(-15);
     // Arial italic 8

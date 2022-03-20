@@ -16,14 +16,16 @@
 
   <br><br><br><br><section class="fotos">
     <div class="contenedor">
-      <?php 
-          echo '<div class="thumb"><a href="menu_alumno.php">A L U M N O S<img src="imagenes/2.jpg" alt=""></a></div>';    
-          echo '<div class="thumb"><a href="menu_tarjetas.php"> A U L A S <img src="imagenes/3.jpg" alt=""></a></div>';
-          echo '<div class="thumb"><a href="subir-pagos.php"> ECONÓMICO<img src="imagenes/1.jpg" alt=""></a></div>';
-          echo '<div class="thumb"><a href="menu_asistencia.php">ASISTENCIA<img src="imagenes/6.jpg" alt=""></a></div>';
-          echo '<div class="thumb"><a href="reporte.php"> REPORTE POR SEDE<img src="imagenes/5.jpg" alt=""></a></div>';
-          echo '<div class="thumb"><a href="reportes.php"> REPORTES <img src="imagenes/4.jpg" alt=""></a></div>';
-       ?>
+          <div class="thumb"><a href="menu_alumno.php">A L U M N O S<img src="imagenes/2.jpg" alt=""></a></div>
+          <div class="thumb"><a href="menu_tarjetas.php"> A U L A S <img src="imagenes/3.jpg" alt=""></a></div>
+          <div class="thumb"><a href="reporte.php"> REPORTE POR SEDE<img src="imagenes/5.jpg" alt=""></a></div>
+          <div class="thumb"><a href="reportes.php"> REPORTES <img src="imagenes/4.jpg" alt=""></a></div>
+
+        <?php if($_SESSION['privilegios'] <= 2): ?>
+          <div class="thumb"><a href="menu_asistencia.php">ASISTENCIA<img src="imagenes/6.jpg" alt=""></a></div>
+          <div class="thumb"><a href="subir-pagos.php"> ECONÓMICO<img src="imagenes/1.jpg" alt=""></a></div>
+        <?php endif; ?>
+       
     </div>
   </section>
 

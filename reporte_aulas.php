@@ -32,7 +32,7 @@ $model_alumno = new Alumno();
 $model_sedes = new Sedes();
 $model_aulas = new Aulas();
 
-$ciclo = '2019-C';
+$ciclo = '2022-C';
 
 
     $alumnos = $model_alumno->alumnos_ordenadosXaula($ciclo);

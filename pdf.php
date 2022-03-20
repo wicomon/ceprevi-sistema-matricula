@@ -1,7 +1,9 @@
 <?php
+session_start();
 require 'fpdf/fpdf.php';
 require 'models/Alumno.php';
-
+require 'funciones.php';
+verificarPrivilegios($_SESSION['privilegios']);
 class PDF extends FPDF
 {
     // Cabecera de página

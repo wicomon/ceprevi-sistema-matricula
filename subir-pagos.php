@@ -5,7 +5,7 @@ require 'funciones.php';
 require 'header.php';
 require 'views/subir-pagos.view.php';
 require 'models/Economico.php';
-
+verificarPrivilegios($_SESSION['privilegios']);
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $carpeta_destino = 'excel/pagos/';

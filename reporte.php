@@ -1,5 +1,8 @@
 <?php session_start();
-
+	
+	if (!isset($_SESSION['usuario'])) {
+		header('Location: index.php');
+	}
 
 require 'funciones.php';
 require_once 'models/Ciclo.php';
@@ -16,11 +19,6 @@ $modelo_sedes = new Sedes();
 
 
 	$posts3 = $modelo_sedes->listar_sedes_alumnos();
-
-	
-if (!isset($_SESSION['usuario'])) {
-	header('Location: index.php');
-}
 
 
 

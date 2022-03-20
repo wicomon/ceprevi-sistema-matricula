@@ -26,6 +26,18 @@ class Alumno extends DBCONEXION {
     return $data;
   }
 
+  function buscar_alumno_por_nombres($paterno,$materno,$dni){
+
+    $conexion = $this->set_connection();
+
+    $sentencia = $conexion->prepare("SELECT * FROM alumno INNER JOIN especialidades ON alumno.carrera=especialidades.cod_esp WHERE a_paterno=:paterno AND a_materno=:materno AND dni=:dni  ORDER BY a_materno,nombres");
+    $sentencia->execute(array(':paterno'=>$paterno,':materno'=>$materno,':dni'=>$dni));
+    $data = $sentencia->fetchAll();
+
+    $this->close();
+    return $data;
+  }
+
   function buscar_alumno_pagos($codigo){
 
     $conexion = $this->set_connection();
@@ -46,6 +58,16 @@ class Alumno extends DBCONEXION {
       $this->close();
       return $data;
   }
+
+  public function alumnos_por_aula($aula, $ciclo, $filtro){
+
+    $conexion = $this->set_connection();
+    $sentencia = $conexion->prepare("SELECT * FROM alumno WHERE aula=:aula AND ciclo =:ciclo  $filtro");
+    $sentencia->execute(array(':aula'=>$aula, ':ciclo'=>$ciclo));
+    $data = $sentencia->fetchAll();
+    $this->close();
+    return $data;
+}
 
   public function alumnos_por_sede_ciclo($sede, $ciclo){
 
